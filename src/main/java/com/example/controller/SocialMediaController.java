@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.service.AccountService;
+import com.example.service.MessageService;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -22,9 +24,11 @@ import com.example.service.AccountService;
 @RequestMapping
 public class SocialMediaController {
     private AccountService accountService;
+    private MessageService messageService;
 @Autowired
-public SocialMediaController(AccountService accountService){
+public SocialMediaController(AccountService accountService, MessageService messageService){
         this.accountService = accountService;
+        this.messageService = messageService;
     }
     @PostMapping("/register")
     public ResponseEntity<Account> register(@RequestBody Account newAccount ){
@@ -53,6 +57,31 @@ public SocialMediaController(AccountService accountService){
      }else{
         return ResponseEntity.status(401).body(test);
      }
+    }
+
+    // Create Message
+    @PostMapping("/messages")
+    public ResponseEntity<Message> postMessage(@RequestBody Message message) {
+        // Check if the message text is not blank and does not exceed 255 characters
+        if (isValidMessage(message)) {
+            Message createdMessage = messageService.createMessage(message);
+            if (createdMessage != null) {
+                return ResponseEntity.ok(createdMessage);
+            } else {
+            return ResponseEntity.badRequest().build();
+          
+            }
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Helper method to validate the message
+    private boolean isValidMessage(Message message) {
+        return message != null &&
+               message.getMessage_text() != null &&
+               !message.getMessage_text().isBlank() &&
+               message.getMessage_text().length() <= 255;
     }
 
 
