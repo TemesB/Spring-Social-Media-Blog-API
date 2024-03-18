@@ -38,9 +38,23 @@ public SocialMediaController(AccountService accountService){
      .body(validateRegistration);
     }else{
         return ResponseEntity.status(409).body(validateRegistration);
-     }
-       
+     } 
     }
+
+    @PostMapping("/login")
+    public  ResponseEntity<Account> login( @RequestBody Account acc ) {
+       
+        Account account = new Account(acc.getUsername(), acc.getPassword());
+       
+       Account test = accountService.loginAccount(account);
+     if(test != null){
+  return ResponseEntity.status(200)
+     .body(test);
+     }else{
+        return ResponseEntity.status(401).body(test);
+     }
+    }
+
 
 
 }
