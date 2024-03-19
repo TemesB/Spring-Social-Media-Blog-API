@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
+
+
 @Service
 public class MessageService {
     @Autowired 
@@ -23,4 +26,25 @@ public class MessageService {
         return null;
         }
     }
+    public List<Message> getAllMessages(){
+       return messageRepository.findAll();
+}
+public Message findMessageByMessage_id(int message_id){
+    Optional<Message> optionalMess = messageRepository.findMessageByMessage_Id(message_id);
+    if(optionalMess.isPresent()){
+        return optionalMess.get();
+    }else{
+        return null;
+    }
+}
+public Message deleteMessageByMessage_id(int message_id){
+    Optional<Message> optionalMess = messageRepository.findMessageByMessage_Id(message_id);
+    
+    if(optionalMess.isPresent()){
+        messageRepository.deleteById(message_id);
+        return optionalMess.get();
+    }else{
+        return null;
+    }
+}
 }

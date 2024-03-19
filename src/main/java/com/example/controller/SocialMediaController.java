@@ -3,6 +3,9 @@ package com.example.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +24,7 @@ import com.example.service.MessageService;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 @RestController
-@RequestMapping
+@RequestMapping()
 public class SocialMediaController {
     private AccountService accountService;
     private MessageService messageService;
@@ -83,7 +86,26 @@ public SocialMediaController(AccountService accountService, MessageService messa
                !message.getMessage_text().isBlank() &&
                message.getMessage_text().length() <= 255;
     }
+    @GetMapping("/messages")
+   public ResponseEntity<?> retrieveAllMessages(){
+    return new ResponseEntity<>(messageService.getAllMessages(),HttpStatus.OK);
+   }
+   @GetMapping("messages/{message_id}")
+   public ResponseEntity<Message> getMessage(@PathVariable Integer message_id) {
+    Message grabMessage = messageService.findMessageByMessage_id(message_id);
+    return ResponseEntity.status(200)
+    .body(grabMessage);
+   }
 
-
-
+   @DeleteMapping   (value = "messages/{message_id}")
+   public ResponseEntity<Integer> deleteMessage(@PathVariable Integer message_id) {
+    Message ans = messageService.deleteMessageByMessage_id(message_id);
+    if(ans != null){
+        return ResponseEntity.status(200)
+        .body(1);
+    }else{
+        return ResponseEntity.status(200)
+        .body(null);
+}
+}
 }
