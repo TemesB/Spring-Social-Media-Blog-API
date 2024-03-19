@@ -97,7 +97,7 @@ public SocialMediaController(AccountService accountService, MessageService messa
     .body(grabMessage);
    }
 
-   @DeleteMapping   (value = "messages/{message_id}")
+   @DeleteMapping   ("messages/{message_id}")
    public ResponseEntity<Integer> deleteMessage(@PathVariable Integer message_id) {
     boolean messageDeleted = messageService.deleteMessageByMessageId(message_id);
     if (messageDeleted) {
