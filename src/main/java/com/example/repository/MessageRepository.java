@@ -15,13 +15,10 @@ public interface MessageRepository extends JpaRepository <Message, Integer> {
     Optional<Message> findMessageByposted_by(Integer posted_by);
     
     @Query("FROM Message mess where mess.message_id = :message_id")
-    Optional<Message> findMessageByMessage_Id(Integer message_id);
-
-    @Query("FROM Message mess where mess.message_id = :message_id")
-    Message findMessageByMessage_Id2(Integer message_id);
+    Message findMessageByMessage_Id(Integer message_id);
     
     @Query("FROM Message mess where mess.posted_by = :posted_by")
-    Optional<List<Message>> findMessagesByposted_by(Integer posted_by);
+    Optional<List<Message>> getMessageByposted_by(Integer posted_by);
 
     
 

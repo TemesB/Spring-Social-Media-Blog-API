@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,7 +64,6 @@ public SocialMediaController(AccountService accountService, MessageService messa
      }
     }
 
-    // Create Message
     @PostMapping("/messages")
     public ResponseEntity<Message> postMessage(@RequestBody Message message) {
         // Check if the message text is not blank and does not exceed 255 characters
@@ -117,20 +115,18 @@ public ResponseEntity<List<Message>> getMessages(@PathVariable Integer account_i
             .body(messages);
 }
 
-
-    //update message
-    @PatchMapping (value = "messages/{message_id}")
+    @PatchMapping ("messages/{message_id}")
     public ResponseEntity<Integer> updateMessage(@PathVariable Integer message_id,  @RequestBody Message text) {
-Message ans = null;
+        Message updatedMessage = null;
         if(text.getMessage_text().length() < 255 && text.getMessage_text().length() > 0){
-  ans = messageService.updateMessageByMessage_id(message_id, text);
+            updatedMessage = messageService.updateMessageByMessage_id(message_id, text);
         }
-  if(ans != null){
-    return ResponseEntity.status(200)
-    .body(1);
-  }else{
-      return ResponseEntity.status(400)
-      .body(null);
+        if(updatedMessage != null){
+            return ResponseEntity.status(200)
+            .body(1);
+        }else{
+            return ResponseEntity.status(400)
+            .body(null);
   }
     }
    

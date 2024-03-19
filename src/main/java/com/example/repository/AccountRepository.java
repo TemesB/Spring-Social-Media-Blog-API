@@ -13,7 +13,6 @@ import com.example.entity.Account;
 public interface AccountRepository extends JpaRepository<Account, Integer>{
     // Create custom method to create new account
    public Account findByUsername(String username);
-    // Naming convention
     Optional<Account> findByUsernameAndPassword(String name, String password);
 
     

@@ -15,9 +15,6 @@ public class MessageService {
     @Autowired 
     private MessageRepository messageRepository;
 
-    public MessageService(MessageRepository messageRepository){
-        this.messageRepository = messageRepository;
-    }
     public Message createMessage(Message message) {
         Optional<Message>existingMessage = messageRepository.findMessageByposted_by(message.getPosted_by());
         if(existingMessage.isPresent()){
@@ -30,7 +27,7 @@ public class MessageService {
        return messageRepository.findAll();
 }
 public Message findMessageByMessage_id(int message_id){
-    Optional<Message> optionalMess = messageRepository.findMessageByMessage_Id(message_id);
+    Optional<Message> optionalMess = messageRepository.findById(message_id);
     if(optionalMess.isPresent()){
         return optionalMess.get();
     }else{
@@ -49,19 +46,19 @@ public boolean deleteMessageByMessageId(int message_id) {
 }
 public List<Message> getMessagesforUser(int posted_by){
    
-    Optional<List<Message>> optionalMess = messageRepository.findMessagesByposted_by(posted_by);
+    Optional<List<Message>> optionalMess = messageRepository.getMessageByposted_by(posted_by);
     if(optionalMess.isPresent()){
         return optionalMess.get();
     }else{
         return null;
     }
 } 
-public Message updateMessageByMessage_id(int id, Message text){
+public Message updateMessageByMessage_id(int message_id, Message text){
        
-    Optional<Message> optionalMess = messageRepository.findMessageByMessage_Id(id);
+    Optional<Message> optionalMess = messageRepository.findById(message_id);
    
     if(optionalMess.isPresent()){
-        Message up = messageRepository.findMessageByMessage_Id2(id);
+        Message up = messageRepository.findMessageByMessage_Id(message_id);
         up.setMessage_text(text.getMessage_text());
         messageRepository.save(up);
         return up;
