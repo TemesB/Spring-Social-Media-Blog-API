@@ -37,14 +37,14 @@ public Message findMessageByMessage_id(int message_id){
         return null;
     }
 }
-public Message deleteMessageByMessage_id(int message_id){
-    Optional<Message> optionalMess = messageRepository.findMessageByMessage_Id(message_id);
-    
-    if(optionalMess.isPresent()){
+public boolean deleteMessageByMessageId(int message_id) {
+    Optional<Message> optionalMessage = messageRepository.findById(message_id);
+
+    if (optionalMessage.isPresent()) {
         messageRepository.deleteById(message_id);
-        return optionalMess.get();
-    }else{
-        return null;
+        return true;
+    } else {
+        return false;
     }
 }
 }
