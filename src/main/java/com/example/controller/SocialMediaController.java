@@ -112,31 +112,29 @@ public SocialMediaController(AccountService accountService, MessageService messa
 
 @GetMapping ("accounts/{account_id}/messages")
 public ResponseEntity<List<Message>> getMessages(@PathVariable Integer account_id) {
-
-    List<Message> ans = messageService.getMessagesforUser(3);
-    System.out.println("TESTing" + account_id);
-ans = messageService.getMessagesforUser(account_id);
-
-return ResponseEntity.status(200)
-.body(ans);
+    List<Message> messages = messageService.getMessagesforUser(account_id);
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(messages);
 }
 
-@PatchMapping("message/{message_id}")
-public ResponseEntity<Integer> updateMessage(@PathVariable Integer message_id,  @RequestBody Message text) {
-    Message ans = null;
-            if(text.getMessage_text().length() < 255 && text.getMessage_text().length() > 0){
-      ans = messageService.updateMessageByMessage_id(message_id, text);
-            }
-     System.out.println("TESTing" + ResponseEntity.status(200).body(ans));
-    
-      if(ans != null){
-        return ResponseEntity.status(200)
-        .body(1);
-      }else{
-          return ResponseEntity.status(400)
-          .body(null);
-      }
+
+    //update message
+    @PatchMapping (value = "messages/{message_id}")
+    public ResponseEntity<Integer> updateMessage(@PathVariable Integer message_id,  @RequestBody Message text) {
+Message ans = null;
+        if(text.getMessage_text().length() < 255 && text.getMessage_text().length() > 0){
+  ans = messageService.updateMessageByMessage_id(message_id, text);
         }
+  if(ans != null){
+    return ResponseEntity.status(200)
+    .body(1);
+  }else{
+      return ResponseEntity.status(400)
+      .body(null);
+  }
+    }
+   
+
 }
 
 
