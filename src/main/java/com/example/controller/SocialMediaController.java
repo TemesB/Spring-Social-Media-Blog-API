@@ -1,10 +1,13 @@
 package com.example.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -97,7 +100,7 @@ public SocialMediaController(AccountService accountService, MessageService messa
     .body(grabMessage);
    }
 
-   @DeleteMapping   ("messages/{message_id}")
+   @DeleteMapping("messages/{message_id}")
    public ResponseEntity<Integer> deleteMessage(@PathVariable Integer message_id) {
     boolean messageDeleted = messageService.deleteMessageByMessageId(message_id);
     if (messageDeleted) {
@@ -106,4 +109,34 @@ public SocialMediaController(AccountService accountService, MessageService messa
         return ResponseEntity.ok().body(null);
     }
 }
+
+@GetMapping ("accounts/{account_id}/messages")
+public ResponseEntity<List<Message>> getMessages(@PathVariable Integer account_id) {
+
+    List<Message> ans = messageService.getMessagesforUser(3);
+    System.out.println("TESTing" + account_id);
+ans = messageService.getMessagesforUser(account_id);
+
+return ResponseEntity.status(200)
+.body(ans);
 }
+
+@PatchMapping("message/{message_id}")
+public ResponseEntity<Integer> updateMessage(@PathVariable Integer message_id,  @RequestBody Message text) {
+    Message ans = null;
+            if(text.getMessage_text().length() < 255 && text.getMessage_text().length() > 0){
+      ans = messageService.updateMessageByMessage_id(message_id, text);
+            }
+     System.out.println("TESTing" + ResponseEntity.status(200).body(ans));
+    
+      if(ans != null){
+        return ResponseEntity.status(200)
+        .body(1);
+      }else{
+          return ResponseEntity.status(400)
+          .body(null);
+      }
+        }
+}
+
+

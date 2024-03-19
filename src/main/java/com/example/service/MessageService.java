@@ -47,4 +47,28 @@ public boolean deleteMessageByMessageId(int message_id) {
         return false;
     }
 }
+public List<Message> getMessagesforUser(int id){
+    System.out.println("ABOUT TO CREATE");
+    Optional<List<Message>> optionalMess = messageRepository.findMessagesByposted_by(id);
+    if(optionalMess.isPresent()){
+        return optionalMess.get();
+    }else{
+        return null;
+    }
 }
+public Message updateMessageByMessage_id(int message_id, Message text){
+       
+    Optional<Message> optionalMess = messageRepository.findMessageByMessage_Id(message_id);
+   
+    if(optionalMess.isPresent()){
+        Message up = messageRepository.findMessageByMessage_Id2(message_id);
+        up.setMessage_text(text.getMessage_text());
+        messageRepository.save(up);
+        System.out.println("ABOUT TO CREATE" + up);
+        return up;
+    }else{
+        return null;
+    }
+}
+}
+
