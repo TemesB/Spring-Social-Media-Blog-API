@@ -91,14 +91,14 @@ public SocialMediaController(AccountService accountService, MessageService messa
    public ResponseEntity<?> retrieveAllMessages(){
     return new ResponseEntity<>(messageService.getAllMessages(),HttpStatus.OK);
    }
-   @GetMapping("messages/{message_id}")
+   @GetMapping("/messages/{message_id}")
    public ResponseEntity<Message> getMessage(@PathVariable Integer message_id) {
     Message grabMessage = messageService.findMessageByMessage_id(message_id);
     return ResponseEntity.status(200)
     .body(grabMessage);
    }
 
-   @DeleteMapping("messages/{message_id}")
+   @DeleteMapping("/messages/{message_id}")
    public ResponseEntity<Integer> deleteMessage(@PathVariable Integer message_id) {
     boolean messageDeleted = messageService.deleteMessageByMessageId(message_id);
     if (messageDeleted) {
@@ -108,14 +108,14 @@ public SocialMediaController(AccountService accountService, MessageService messa
     }
 }
 
-@GetMapping ("accounts/{account_id}/messages")
+@GetMapping ("/accounts/{account_id}/messages")
 public ResponseEntity<List<Message>> getMessages(@PathVariable Integer account_id) {
     List<Message> messages = messageService.getMessagesforUser(account_id);
     return ResponseEntity.status(HttpStatus.OK)
             .body(messages);
 }
 
-    @PatchMapping ("messages/{message_id}")
+    @PatchMapping ("/messages/{message_id}")
     public ResponseEntity<Integer> updateMessage(@PathVariable Integer message_id,  @RequestBody Message text) {
         Message updatedMessage = null;
         if(text.getMessage_text().length() < 255 && text.getMessage_text().length() > 0){

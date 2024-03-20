@@ -11,8 +11,8 @@ import com.example.entity.Account;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer>{
-    // Create custom method to create new account
-   public Account findByUsername(String username);
+     // Defiene methods that follow query naming convention
+    Account findByUsername(String username);
     Optional<Account> findByUsernameAndPassword(String name, String password);
 
     

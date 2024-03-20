@@ -10,7 +10,7 @@ import com.example.entity.Message;
 
 @Repository
 public interface MessageRepository extends JpaRepository <Message, Integer> {
-    // Defiene methods that follows query naming convention
+    // Defiene methods that follow query naming convention
     @Query("FROM Message mess where mess.posted_by = :posted_by")
     Optional<Message> findMessageByposted_by(Integer posted_by);
     
